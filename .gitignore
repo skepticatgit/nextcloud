@@ -1,6 +1,6 @@
 # data created by nextcloud
-nextcloud/
-proxy/
+**/nextcloud/
+**/proxy/
 
 # private variables
 .env

@@ -1,0 +1,28 @@
+#!/bin/bash -eux
+
+source .env
+
+#Create config
+mkdir -p ./nextcloud/config
+
+cat > ./nextcloud/config/config.php <<EOF
+<?php
+\$CONFIG = array (
+  'trusted_domains' => 
+  array (
+    0 => '${DOMAIN}',
+  ),
+  'datadirectory' => '/var/www/html/data',
+  'overwrite.cli.url' => 'http://${DOMAIN}',
+  'dbtype' => 'mysql',
+  'dbname' => 'nextcloud',
+  'dbhost' => 'db:3306',
+  'dbtableprefix' => 'oc_',
+  'dbuser' => 'nextcloud',
+  'dbpassword' => '${MYSQL_USER_PW}',
+  'theme' => '',
+  'maintenance' => false,
+  'memcache.local' => '\\OC\\Memcache\\APCu',
+);
+EOF
+
