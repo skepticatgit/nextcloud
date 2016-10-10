@@ -9,7 +9,7 @@ Each subfolder contains a `docker-compose.yml` file and an `install` script. The
 
 The compose files and the install script are controlled with environment variables from an `.env` file that has to be created first. You can find the environment variables in the .env-example file of each folder.
 
-## minimal example
+## example
 The minimal example just creates a nextcloud instance, a simple nginx webserver and a mariaDB database. It exposes the nextcloud installation to port 80 of your host. This example is insecure as any communication to your server is unencrypted.
 Just use this image as example or for local testing.
 
@@ -21,7 +21,7 @@ The reverse proxy resolves your containers to subdomains, so make sure to use a 
 The redis example builds on the reverse proxy with letsencrypt and adds file locking in a redis container. For local caching uAPC will be used.
 
 ## collabora
-The collabora example builds on the reverse proxy with letsencrypt and adds the collabora [collabora/code](https://hub.docker.com/r/collabora/code/) container for online document editing.
+The collabora example builds on redis and adds the collabora [collabora/code](https://hub.docker.com/r/collabora/code/) container for online document editing.
 The collabora container will use a different subdomain than you nextcloud installation, for example `office.example.com`.
 To activate collabora you have to install the collabora-connector app from the productivity tab in the appstore (make sure to activate experimental apps) and enter your collabora subdomain name in the settings (without any port).
 
