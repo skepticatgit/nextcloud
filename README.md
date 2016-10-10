@@ -2,50 +2,66 @@
 
 A safe home for all your data. Access & share your files, calendars, contacts, mail & more from any device, on your terms.
 
-# How to use this image
+# Contents
+This is a collection of docker-compose examples for installing nextcloud with docker containers.
 
-The easiest is to use our `docker-compose.yml`.
+Each Subfolder contains a `docker-compose.yml` file and an `install` script. The install script creates mandatory configurations for the containers to run properly.
 
-Make sure you have [docker-compose](http://docs.docker.com/compose/install/) installed. And then:
+The compose files and the install script are controlled with environment variables from an `.env` file that has to be created first. You can find the environment variables in the .env-example file of each folder.
+
+## minimal example
+The minimal example just creates a nextcloud instance, a simple nginx webserver and a mariaDB database. It exposes the nextcloud installation to port 80 of your host. This example is insecure as any communication to your server is unencrypted.
+Just use this image as example or for local testing.
+
+## reverse proxy with letsencrypt
+This example provides a full nextcloud installation that can be run as is. It uses the [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) and the [jrcs/letsencrypt-nginx-proxy-companion](https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/) to automatically create letsencrypt certificates for you domains and redirects any request to https.
+The reverse proxy resolves your containers to subdomains, so make sure to use a subdomain such as `cloud.example.com` as domain name.
+
+## redis
+The redis example builds on the reverse proxy with letsencrypt and adds file locking in a redis container. For local caching uAPC will be used.
+
+## collabora
+The collabora example builds on the reverse proxy with letsencrypt and adds the collabora [collabora/code](https://hub.docker.com/r/collabora/code/) container for online document editing.
+The collabora container will use a different subdomain than you nextcloud installation, for example `office.example.com`.
+To activate collabora you have to install the collabora-connector app from the productivity tab in the appstore (make sure to activate experimental apps) and enter your collabora subdomain name in the settings (without any port).
+
+# Installation
+First you have to create a `.env` file next to the `docker-compose` file you would like to use. Use the .env-example file to see which variables are needed.
 
 ```bash
-git clone https://github.com/indiehosters/nextcloud.git
-cd pnextcloud
-MYSQL_ROOT_PASSWORD=mystrongpassword docker-compose up
+cp .env-example .env
 ```
 
-You can now access your instance on the port 80 of the IP of your machine (not recommended for production).
+When you have your .env file run the install script.
 
-## Access it from Internet
+```bash
+./install
+```
 
-We recommend the usage of TLS, so the easiest is to use a TLS capable reverse proxy.
-Here are 2 examples:
+After that you can start the containers. Depending on the example your using it can take a few moments for all containers to start.
 
- - [haproxy](https://github.com/indiehosters/haproxy)
- - [nginx](https://github.com/indiehosters/nginx)
-
-You can also modify manually the nginx configuration file and map the TLS port of the host to the container.
-
-## Installation
+```bash
+docker-compose up -d
+```
 
 Once started, you'll arrive at the configuration wizard.
 At the `Database Setup` step, please enter the following:
 
   -  Database Server: `db`
-  -  Login: `root`
-  -  Password: MYSQL_ROOT_PASSWORD
-  -  Database Name: nextcloud (or you can choose)
- 
+  -  Login: `nextcloud`
+  -  Password: `<your password>`
+  -  Database Name: `nextcloud`
+
 And leave the rest as default.
 
-Then you can continue the installation with the super user.
+# Update
+To get recent container upgrades you just have to pull the new image and use the `up` command again. 
+```bash
+docker-compose pull && docker-compose up -d
+```
 
-## Backup
-
-In order to backup, just run the `./pre-backup` script. And copy all the data to a safe place.
-
-## Contribute
+# Contribute
 
 Pull requests are very welcome!
 
-We'd love to hear your feedback and suggestions in the issue tracker: [github.com/indiehosters/nextcloud/issues](https://github.com/indiehosters/nextcloud/issues).
+We'd love to hear your feedback and suggestions in the [issue tracker](https://github.com/SnowMB/nextcloud/issues).
