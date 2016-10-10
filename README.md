@@ -9,13 +9,15 @@ Each subfolder contains a `docker-compose.yml` file and an `install` script. The
 
 The compose files and the install script are controlled with environment variables from an `.env` file that has to be created first. You can find the environment variables in the .env-example file of each folder.
 
-## example
+## minimal
 The minimal example just creates a nextcloud instance, a simple nginx webserver and a mariaDB database. It exposes the nextcloud installation to port 80 of your host. This example is insecure as any communication to your server is unencrypted.
 Just use this image as example or for local testing.
+The data is stored in a subfolder called `nextcloud`. There you can find `db`,`apps`, `config` and `data`.
 
 ## reverse proxy with letsencrypt
 This example provides a full nextcloud installation that can be run as is. It uses the [jwilder/nginx-proxy](https://hub.docker.com/r/jwilder/nginx-proxy/) and the [jrcs/letsencrypt-nginx-proxy-companion](https://hub.docker.com/r/jrcs/letsencrypt-nginx-proxy-companion/) to automatically create letsencrypt certificates for you domains and redirects any request to https.
 The reverse proxy resolves your containers to subdomains, so make sure to use a subdomain such as `cloud.example.com` as domain name.
+The reverse proxy configuration is stored in a subfolder called `proxy`. 
 
 ## redis
 The redis example builds on the reverse proxy with letsencrypt and adds file locking in a redis container. For local caching uAPC will be used.
@@ -59,6 +61,15 @@ And leave the rest as default.
 To get recent container upgrades you just have to pull the new image and use the `up` command again. 
 ```bash
 docker-compose pull && docker-compose up -d
+```
+
+# Delete / Reset your configuration
+If you're testing you might want to delete all the data and start from scratch. For that you stop and delete the docker containers und delete the subfolders created with the installation. Beware that you must have superuser rights to delete the subfolders created by docker.
+
+```bash
+docker-compose down 
+sudo rm -r nextcloud/
+sudo rm -r proxy/
 ```
 
 # Contribute
