@@ -52,7 +52,7 @@ After that you can start the containers. Depending on the example your using it 
 docker-compose up -d
 ```
 
-Once started, you'll arrive at the configuration wizard.
+Once started, you can access your nextcloud. You'll arrive at the configuration wizard.
 At the `Database Setup` step, please enter the following:
 
   -  Database Server: `db`
