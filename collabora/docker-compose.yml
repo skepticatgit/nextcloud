@@ -16,6 +16,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
       - proxy-tier
+    restart: always
 
   letsencrypt-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -25,8 +26,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./proxy/certs:/etc/nginx/certs:rw
-    environment:
-      - LETSENCRYPT_TEST=TRUE
+    restart: always
+#    environment:
+#      - LETSENCRYPT_TEST=TRUE
 
 
   web:
@@ -46,6 +48,8 @@ services:
       - LETSENCRYPT_EMAIL=${EMAIL}
     networks:
       - proxy-tier
+    restart: always
+
 
 
   app:
@@ -59,6 +63,8 @@ services:
       - ./nextcloud/data:/var/www/html/data
     networks:
       - proxy-tier
+    restart: always
+
     
 
   db:
@@ -73,12 +79,16 @@ services:
       - MYSQL_PASSWORD=${MYSQL_USER_PW}
     networks:
       - proxy-tier
+    restart: always
+
 
   redis:
     image: redis
     container_name: redis
     networks:
       - proxy-tier
+    restart: always
+
 
   collabora:
     image: collabora/code
@@ -97,6 +107,8 @@ services:
       - LETSENCRYPT_EMAIL=${EMAIL}
     networks:
       - proxy-tier
+    restart: always
+
 
 
 networks:
