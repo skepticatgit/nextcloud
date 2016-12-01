@@ -41,13 +41,18 @@ When you have your .env file run the install script.
 ./install
 ```
 
-After that you can start the containers. Depending on the example your using it can take a few moments for all containers to start.
+If you're using an example with the reverse proxy (reverseproxy, redis, collabora) then you have to create a docker network.
+```bash
+docker network create -d bridge nginx-proxy
+```
+
+After that you can start the containers. Depending on the example your using it can take a few moments for all containers to start. 
 
 ```bash
 docker-compose up -d
 ```
 
-Once started, you'll arrive at the configuration wizard.
+Once started, you can access your nextcloud. You'll arrive at the configuration wizard.
 At the `Database Setup` step, please enter the following:
 
   -  Database Server: `db`
