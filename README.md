@@ -63,7 +63,23 @@ At the `Database Setup` step, please enter the following:
 And leave the rest as default.
 
 # Update
-To get recent container upgrades you just have to pull the new image and use the `up` command again. 
+The nextcloud server files are stored in a docker volume and will be persistant even if the container stopped and restartet. 
+To get recent container upgrades you have two options. The first is using the upgrade script provided by nextcloud. Documentation can be found [here](). 
+But if the container is rebuild from the image a new docker volume will be created and the changes made by the upgrade script are lost. You will not only fall back to the version specified in the image from the compose file, but nextcloud will also refuse to work, because you database and files are on a newer version then the server files and downgrading is not supported.
+
+The better way to upgrade when working with docker containers is going the "docker way". If you use official images you have to wait until the image of new version is available. You can simply pull it by:
+
+```bash
+docker-compose pull
+```
+
+Before you start your new version you have to make sure, that the old server files are deleted from the volume. To do that you can use 
+
+```bash
+docker-compose down -v
+```
+
+Now have to use the `up` command again. 
 ```bash
 docker-compose pull && docker-compose up -d
 ```
