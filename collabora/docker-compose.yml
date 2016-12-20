@@ -19,7 +19,7 @@ services:
     restart: always
 
   letsencrypt-companion:
-    image: jrcs/letsencrypt-nginx-proxy-companion
+    image: alastaircoote/docker-letsencrypt-nginx-proxy-companion
     container_name: letsencrypt-companion
     volumes_from:
       - proxy
