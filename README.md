@@ -38,12 +38,7 @@ nano .env-example
 When you have your .env file run the install script.
 
 ```bash
-./install
-```
-
-If you're using an example with the reverse proxy (reverseproxy, redis, collabora) then you have to create a docker network.
-```bash
-docker network create -d bridge nginx-proxy
+./generate-config
 ```
 
 After that you can start the containers. Depending on the example your using it can take a few moments for all containers to start. 
@@ -53,14 +48,14 @@ docker-compose up -d
 ```
 
 Once started, you can access your nextcloud. You'll arrive at the configuration wizard.
-At the `Database Setup` step, please enter the following:
+Choose an appropriate admin name and password and at the `Database Setup` step, please enter the following:
 
   -  Database Server: `db`
   -  Login: `nextcloud`
   -  Password: `<your password>`
   -  Database Name: `nextcloud`
 
-And leave the rest as default.
+Leave the rest as default.
 
 # Update
 The nextcloud server files are stored in a docker volume and will be persistant even if the container stopped and restartet. 
@@ -68,33 +63,16 @@ To get recent container upgrades you have two options. The first is using the up
 
 But if the container is rebuild a new docker volume will be created and changes made by the upgrade script are lost. You will not only fall back to the version specified in the image you used in your compose file, nextcloud will also refuse to work, because downgrading the database is not supported.
 
-The better way to upgrade docker containers is going the "docker way". You have to wait until a image of the new version is available. You can simply pull it by:
+There is an ongoing discussion how to solve the problem, see [here](https://github.com/nextcloud/docker/pull/23)
 
-```bash
-docker-compose pull
-```
+For now I recommand using the web updater app.
 
-Before you start your new version you have to make sure, that the old server files are deleted from the volume. To do that you can use 
-
-```bash
-docker-compose down -v
-```
-
-Now you can bring your nextcloud back by using the `up` command again. 
-
-```bash
-docker-compose up -d
-```
-
-When you access your nextcloud with the browser you will be guided through the update process.
 
 # Delete / Reset your configuration
 If you're testing you might want to delete all the data and start from scratch. For that you stop and delete the docker containers und delete the subfolders created with the installation. Beware that you must have superuser rights to delete the subfolders created by docker.
 
 ```bash
-docker-compose down 
-sudo rm -r nextcloud/
-sudo rm -r proxy/
+docker-compose down  -v
 ```
 
 # Contribute
