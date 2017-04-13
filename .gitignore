@@ -4,3 +4,6 @@
 
 # private variables
 .env
+
+#generated config
+.config.php

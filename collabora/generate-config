@@ -3,12 +3,10 @@
 source .env
 
 #Create config
-mkdir -p ./nextcloud/config
-
-cat > ./nextcloud/config/config.php <<EOF
+cat > config.php <<EOF
 <?php
 \$CONFIG = array (
-  'trusted_domains' => 
+  'trusted_domains' =>
   array (
     0 => '${DOMAIN}',
   ),
@@ -31,11 +29,8 @@ cat > ./nextcloud/config/config.php <<EOF
        ),
 
 );
+?>
 EOF
 
 
-#add proxy config for max_upload_size
-mkdir -p ./proxy/conf.d
-
-echo "client_max_body_size 10G;" > ./proxy/conf.d/uploadsize.conf
 
