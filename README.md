@@ -38,7 +38,7 @@ nano .env-example
 When you have your .env file run the install script.
 
 ```bash
-./generate-config
+./install.sh
 ```
 
 After that you can start the containers. Depending on the example your using it can take a few moments for all containers to start. 
@@ -50,8 +50,8 @@ docker-compose up -d
 Once started, you can access your nextcloud. You'll arrive at the configuration wizard.
 Choose an appropriate admin name and password and at the `Database Setup` step, please enter the following:
 
-  -  Database Server: `db`
-  -  Login: `nextcloud`
+  -  Database Server: `db:3306`
+  -  Login: `root`
   -  Password: `<your password>`
   -  Database Name: `nextcloud`
 
